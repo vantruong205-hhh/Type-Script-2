@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 type Course = {
   id: string | number;
@@ -116,7 +117,11 @@ function ListPage() {
                 <td className="px-4 py-2 border border-gray-300">{item.credit ?? "-"}</td>
                 <td className="px-4 py-2 border border-gray-300">{item.category ?? "-"}</td>
                 <td className="px-4 py-2 border border-gray-300">{item.teacher ?? "-"}</td>
-                <td className="px-4 py-2 border border-gray-300">Edit</td>
+                <td className="px-4 py-2 border border-gray-300">
+                  <Link to={`/edit/${item.id}`} className="text-blue-600 hover:underline">
+                    Edit
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
