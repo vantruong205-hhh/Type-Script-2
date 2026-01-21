@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 type Course = {
   id: string | number;
@@ -20,6 +21,7 @@ function ListPage() {
   const [page, setPage] = useState(1);
   const limit = 5;
   const [total, setTotal] = useState(0);
+  const [refresh, setRefresh] = useState(0);
 
   // debounce search
   useEffect(() => {
@@ -49,7 +51,7 @@ function ListPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const params: any = { _page: page, _limit: limit };
+        const params: Record<string, string | number> = { _page: page, _limit: limit };
         if (debouncedSearch) params.name_like = debouncedSearch;
         if (teacherFilter) params.teacher = teacherFilter;
 
@@ -64,9 +66,21 @@ function ListPage() {
       }
     };
     fetchData();
-  }, [debouncedSearch, teacherFilter, page]);
+  }, [debouncedSearch, teacherFilter, page, refresh]);
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
+
+  const handleDelete = async (id: string | number) => {
+    if (!confirm("Bạn có chắc muốn xóa khóa học này?")) return;
+    try {
+      await axios.delete(`http://localhost:3000/courses/${id}`);
+      toast.success("Xóa khóa học thành công!");
+      setRefresh((prev) => prev + 1);
+    } catch (error) {
+      console.error(error);
+      toast.error("Xóa thất bại!");
+    }
+  };
 
   return (
     <div className="p-6">
@@ -118,9 +132,15 @@ function ListPage() {
                 <td className="px-4 py-2 border border-gray-300">{item.category ?? "-"}</td>
                 <td className="px-4 py-2 border border-gray-300">{item.teacher ?? "-"}</td>
                 <td className="px-4 py-2 border border-gray-300">
-                  <Link to={`/edit/${item.id}`} className="text-blue-600 hover:underline">
+                  <Link to={`/edit/${item.id}`} className="text-blue-600 hover:underline mr-2">
                     Edit
                   </Link>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
