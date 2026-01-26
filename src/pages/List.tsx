@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 type Course = {
@@ -12,6 +12,7 @@ type Course = {
 };
 
 function ListPage() {
+  const location = useLocation();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -22,6 +23,13 @@ function ListPage() {
   const limit = 5;
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(0);
+
+  // trigger refresh when navigated with state
+  useEffect(() => {
+    if (location.state?.refresh) {
+      setRefresh((prev) => prev + 1);
+    }
+  }, [location.state]);
 
   // debounce search
   useEffect(() => {
@@ -51,12 +59,20 @@ function ListPage() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const params: Record<string, string | number> = { _page: page, _limit: limit };
+        const params: Record<string, string | number> = { _page: page, _limit: limit, _sort: 'id', _order: 'asc' };
         if (debouncedSearch) params.name_like = debouncedSearch;
         if (teacherFilter) params.teacher = teacherFilter;
 
         const res = await axios.get("http://localhost:3000/courses", { params });
-        setCourses(res.data);
+        const sortedCourses = res.data.sort((a: Course, b: Course) => {
+          const aId = isNaN(Number(a.id)) ? a.id : Number(a.id);
+          const bId = isNaN(Number(b.id)) ? b.id : Number(b.id);
+          if (typeof aId === 'number' && typeof bId === 'number') {
+            return aId - bId; // ascending
+          }
+          return String(a.id).localeCompare(String(b.id));
+        });
+        setCourses(sortedCourses);
         const totalCount = res.headers["x-total-count"] ?? res.data.length;
         setTotal(Number(totalCount));
       } catch (error) {
@@ -115,18 +131,18 @@ function ListPage() {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-4 py-2 border border-gray-300 text-left">ID</th>
-              <th className="px-4 py-2 border border-gray-300 text-left">Name</th>
-              <th className="px-4 py-2 border border-gray-300 text-left">Credit</th>
-              <th className="px-4 py-2 border border-gray-300 text-left">Category</th>
-              <th className="px-4 py-2 border border-gray-300 text-left">Teacher</th>
-              <th className="px-4 py-2 border border-gray-300 text-left">Actions</th>
+              <th className="px-4 py-2 border border-gray-300 text-left">Tên môn học</th>
+              <th className="px-4 py-2 border border-gray-300 text-left">Số tín chỉ</th>
+              <th className="px-4 py-2 border border-gray-300 text-left">Chuyên ngành</th>
+              <th className="px-4 py-2 border border-gray-300 text-left">Giảng viên</th>
+              <th className="px-4 py-2 border border-gray-300 text-left">Hành động</th>
             </tr>
           </thead>
 
           <tbody>
-            {courses.map((item) => (
+            {courses.map((item, index) => (
               <tr key={String(item.id)} className="hover:bg-gray-50">
-                <td className="px-4 py-2 border border-gray-300">{item.id}</td>
+                <td className="px-4 py-2 border border-gray-300">{(page - 1) * limit + index + 1}</td>
                 <td className="px-4 py-2 border border-gray-300">{item.name}</td>
                 <td className="px-4 py-2 border border-gray-300">{item.credit ?? "-"}</td>
                 <td className="px-4 py-2 border border-gray-300">{item.category ?? "-"}</td>

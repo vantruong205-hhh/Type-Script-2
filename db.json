@@ -29,15 +29,15 @@
       "teacher": "Phạm Văn D"
     },
     {
-      "id": "f078",
+      "id": "5",
       "name": "Nguyen Van Truong"
     },
     {
-      "id": "254e",
+      "id": "6",
       "name": "Nguyen Van Truong"
     },
     {
-      "id": "ea98",
+      "id": "7",
       "name": "rá"
     },
     {
@@ -45,14 +45,21 @@
       "credit": 5,
       "category": "Đại cương",
       "teacher": "llljhvj",
-      "id": "zQaQase"
+      "id": "8"
     },
     {
       "name": "sdfghjk",
       "credit": 23,
       "category": "Cơ sở",
       "teacher": "sdfghj",
-      "id": "VR3F9zb"
+      "id": "9"
+    },
+    {
+      "name": "Nguyen Van Truong",
+      "credit": 34,
+      "category": "Đại cương",
+      "teacher": "ABCCC",
+      "id": "10"
     }
   ]
 }

@@ -29,7 +29,7 @@ function AddPage() {
     try {
       await axios.post("http://localhost:3000/courses", payload);
       toast.success("Thêm thành công");
-      navigate("/list");
+      navigate("/list", { state: { refresh: true } });
     } catch (error) {
       console.error(error);
       toast.error("Có lỗi khi thêm dữ liệu");
@@ -43,10 +43,10 @@ function AddPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <label htmlFor="name" className="block font-medium mb-1">
-            Name
+            Tên môn học
           </label>
           <input
-            {...register("name", { required: "Name is required", minLength: { value: 4, message: "Name must be at least 4 characters" } })}
+            {...register("name", { required: "Tên là bắt buộc", minLength: { value: 4, message: "Tên phải có ít nhất 4 ký tự" } })}
             type="text"
             id="name"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -58,10 +58,10 @@ function AddPage() {
 
         <div>
           <label htmlFor="teacher" className="block font-medium mb-1">
-            Teacher
+            Giảng viên
           </label>
           <input
-            {...register("teacher", { required: "Teacher is required", minLength: { value: 4, message: "Teacher must be at least 4 characters" } })}
+            {...register("teacher", { required: "Giảng viên là bắt buộc", minLength: { value: 4, message: "Giảng viên phải có ít nhất 4 ký tự" } })}
             type="text"
             id="teacher"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -73,10 +73,10 @@ function AddPage() {
 
         <div>
           <label htmlFor="credit" className="block font-medium mb-1">
-            Credit
+            Số tín chỉ
           </label>
           <input
-            {...register("credit", { required: "Credit is required", min: { value: 1, message: "Credit must be greater than 0" } })}
+            {...register("credit", { required: "Số tín chỉ là bắt buộc", min: { value: 1, message: "Số tín chỉ phải lớn hơn 0" } })}
             type="number"
             id="credit"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -88,10 +88,10 @@ function AddPage() {
 
         <div>
           <label htmlFor="category" className="block font-medium mb-1">
-            Category
+            Chuyên ngành
           </label>
           <select
-            {...register("category", { required: "Category is required" })}
+            {...register("category", { required: "Chuyên ngành là bắt buộc" })}
             id="category"
             className="w-full border rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             defaultValue="Chuyên ngành"
