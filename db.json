@@ -29,10 +29,6 @@
       "teacher": "Phạm Văn D"
     },
     {
-      "id": "5",
-      "name": "Nguyen Van Truong"
-    },
-    {
       "id": "6",
       "name": "Nguyen Van Truong"
     },
@@ -53,13 +49,6 @@
       "category": "Cơ sở",
       "teacher": "sdfghj",
       "id": "9"
-    },
-    {
-      "name": "Nguyen Van Truong",
-      "credit": 34,
-      "category": "Đại cương",
-      "teacher": "ABCCC",
-      "id": "10"
     }
   ]
 }

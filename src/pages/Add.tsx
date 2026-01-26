@@ -27,7 +27,7 @@ function AddPage() {
     };
 
     try {
-      await axios.post("http://localhost:3000/courses", payload);
+      await axios.post("/courses", payload);
       toast.success("Thêm thành công");
       navigate("/list", { state: { refresh: true } });
     } catch (error) {

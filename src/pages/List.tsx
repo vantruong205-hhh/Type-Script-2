@@ -44,7 +44,7 @@ function ListPage() {
   useEffect(() => {
     const getTeachers = async () => {
       try {
-        const { data } = await axios.get("http://localhost:3000/courses");
+        const { data } = await axios.get("/courses");
         const names = Array.from(new Set(data.map((c: Course) => c.teacher).filter(Boolean)));
         setTeachers(names as string[]);
       } catch (error) {
@@ -63,7 +63,7 @@ function ListPage() {
         if (debouncedSearch) params.name_like = debouncedSearch;
         if (teacherFilter) params.teacher = teacherFilter;
 
-        const res = await axios.get("http://localhost:3000/courses", { params });
+        const res = await axios.get("/courses", { params });
         const sortedCourses = res.data.sort((a: Course, b: Course) => {
           const aId = isNaN(Number(a.id)) ? a.id : Number(a.id);
           const bId = isNaN(Number(b.id)) ? b.id : Number(b.id);
@@ -89,7 +89,7 @@ function ListPage() {
   const handleDelete = async (id: string | number) => {
     if (!confirm("Bạn có chắc muốn xóa khóa học này?")) return;
     try {
-      await axios.delete(`http://localhost:3000/courses/${id}`);
+      await axios.delete(`/courses/${id}`);
       toast.success("Xóa khóa học thành công!");
       setRefresh((prev) => prev + 1);
     } catch (error) {

@@ -24,7 +24,7 @@ function EditPage() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/courses/${id}`);
+        const { data } = await axios.get(`/courses/${id}`);
         setValue("name", data.name);
         setValue("credit", data.credit);
         setValue("category", data.category);
@@ -46,7 +46,7 @@ function EditPage() {
     };
 
     try {
-      await axios.put(`http://localhost:3000/courses/${id}`, payload);
+      await axios.put(`/courses/${id}`, payload);
       toast.success("Sửa thành công");
       navigate("/list");
     } catch (error) {

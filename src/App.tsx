@@ -3,6 +3,17 @@ import { Link, Route, Routes } from "react-router-dom";
 import ListPage from "./pages/List";
 import AddPage from "./pages/Add";
 import EditPage from "./pages/Edit";
+import AuthPage from "./pages/Auth";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:3000";
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 function App() {
   return (
@@ -26,10 +37,10 @@ function App() {
           </div>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="#" className="hover:text-gray-200">
+            <Link to="/auth" className="hover:text-gray-200">
               Đăng nhập
             </Link>
-            <Link to="#" className="hover:text-gray-200">
+            <Link to="/auth" className="hover:text-gray-200">
               Đăng ký
             </Link>
           </div>
@@ -40,9 +51,11 @@ function App() {
       <div className="max-w-6xl mx-auto mt-10 px-4 text-center">
         <h1 className="text-4xl font-bold mb-4">Chào mừng đến với WEB502</h1>
         <Routes>
-          <Route path="/list" element={<ListPage />}></Route>
-          <Route path="/add" element={<AddPage />}></Route>
-          <Route path="/edit/:id" element={<EditPage />}></Route>
+          <Route path="/" element={<AuthPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/list" element={<ListPage />} />
+          <Route path="/add" element={<AddPage />} />
+          <Route path="/edit/:id" element={<EditPage />} />
         </Routes>
       </div>
 
