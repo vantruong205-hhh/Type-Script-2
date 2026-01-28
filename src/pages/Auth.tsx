@@ -27,6 +27,8 @@ function AuthPage() {
         try {
             const res = await axios.post("http://localhost:3000/login", data);
             localStorage.setItem("token", res.data.accessToken);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            window.dispatchEvent(new Event("userChanged"));
             toast.success("Đăng nhập thành công");
             navigate("/list");
         } catch (error) {
