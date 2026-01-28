@@ -47,8 +47,9 @@ function AuthPage() {
             });
             toast.success("Đăng ký thành công");
             setIsLogin(true);
-        } catch (error) {
-            toast.error("Đăng ký thất bại");
+        } catch (error: any) {
+            console.error("Lỗi đăng ký:", error.response?.data || error.message);
+            toast.error(error.response?.data?.message || "Đăng ký thất bại");
         }
     };
 
@@ -106,7 +107,7 @@ function AuthPage() {
                         <input
                             {...registerForm.register("username", {
                                 required: "Tên người dùng là bắt buộc",
-                                minLength: { value: 5, message: "Tên người dùng phải có ít nhất 5 ký tự" },
+                                minLength: { value: 5, message: "Tên người dùng phải có hơn 4 ký tự" },
                             })}
                             type="text"
                             className="w-full border rounded-lg px-3 py-2"
@@ -134,7 +135,7 @@ function AuthPage() {
                         <input
                             {...registerForm.register("password", {
                                 required: "Mật khẩu là bắt buộc",
-                                minLength: { value: 7, message: "Mật khẩu phải có ít nhất 7 ký tự" },
+                                minLength: { value: 7, message: "Mật khẩu phải có hơn 6 ký tự" },
                             })}
                             type="password"
                             className="w-full border rounded-lg px-3 py-2"

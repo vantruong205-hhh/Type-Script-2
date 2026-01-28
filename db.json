@@ -1,4 +1,12 @@
 {
+  "users": [
+    {
+      "email": "bgjgsyhvv@gmail.com",
+      "password": "$2a$10$Cnov9mJHopXSwCQnxNDHNuvFQK2c9xuyb2eYObSCjas4/eufmSxRS",
+      "username": "nvt203205",
+      "id": 1
+    }
+  ],
   "courses": [
     {
       "name": "ReactJS Cơ Bản",
